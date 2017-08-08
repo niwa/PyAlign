@@ -1,0 +1,135 @@
+Input file for ALIGN5
+
+Agreement:
+ALIGN is a code for the simulation of misaligned cube-corner interferometers. It is a software
+intended to use together with LINEFIT. For scientific, non-commercial use you may use ALIGN for free.
+Please, do not pass on ALIGN to colleagues, instead refer them to me or Thomas Blumenstock. 
+We intend to keep some overview concerning the distribution of ALIGN, this allows us to inform
+all ALIGN users about software upgrades or about any problems experienced by one of them in
+using ALIGN. In developing ALIGN, I tried to exclude any faulties and the software has been checked
+vs. different radiation transfer codes and vs. a direct ILS deconvolution approach developed by 
+Anton Lengel (IMK) for the MIPAS-B experiment. Therefore ALIGN results should be trustworthy.
+Nevertheless, the author and IMK refuse any warranties with respect to the use of ALIGN. 
+In no event shall the author or IMK be responsible for any direct, indirect or consequential damages.
+
+Install program in subdirectory align and generate path for output according to your choice (see input
+file below)
+
+First input block:
+output directory
+opdmax [cm]
+wvnr [cm-1]
+idealdec (should self-apodisation included in definition of ideal instrument?
+              Yes: true)
+sidedec (double sided interferogram: true)
+leftdec (if single sided, calculate modulation from neg. side (true) or pos. side (false) of ifg)
+
+$
+ergsalign
+257.0
+2400.0
+.true.
+.false.
+.false.
+
+
+Second input block:
+accuracy (determines number of elements in FOV,standard 1.0, higher values for higher precision)
+phi_fov_y,phi_fov_z [rad] (decenter of entrance aperture defining FOV)
+phi_laser_y,phi_laser_z [rad] (decenter of path measuring laser)
+Circular (0) or rectangular (1) FOV
+if FOV eq. 0:
+fovradius [rad] (half diameter of FOV!)
+smear [rad] (linear smear from fovradius-0.5*smear to fovradius+0.5*smear)
+if FOV eq. 1:
+semifovy [rad],semifovz [rad]
+smeary [rad],smearz [rad]
+
+$
+1.0
+0.0,0.0
+0.0,0.0
+0
+1.477e-3
+0.0002
+
+Third input block:
+Vignetting
+
+take vignetting into account (true/false)
+Circular (0) or rectangular (1) beam section?
+if beam section circular:
+diameter of beam [cm]
+if beam section rectangular
+full beamwidthy [cm],full beamwidthz [cm]
+
+$
+.false.
+0
+6.5
+
+
+
+Fourth input block:
+describes lateral shear between retroreflectors as fct of OPD
+
+constant shear along y, z (equ to -1 x shear offset of fixed retro) [cm]
+linear shear along y,z [cm / cm]
+To describe bending of scanner bar:
+How many periodic shear components?
+Specify period for each periodic shear [cm]
+Specify amplitudes along y, cosine and sine [cm]
+Specify amplitudes along z, cosine and sine [cm]
+$
+0.1,0.0
+0.0,0.0
+1
+100.0
+(0.0,0.0)
+(0.02,0.01)
+
+
+Fifth input block:
+number of sketches (picture of laser fringes in FOV)
+wavenumber of laser source (15800 for visible HeNe-laser)
+For 1 to number of sketches: give relative opd position of each sketch (1.0 = opdmax)
+
+$
+1
+15800
+0.2
+
+
+Sixth input block:
+Choose numerical apodisation function
+        (1: boxcar
+         2: triag
+         3: Hamming
+         4/5: Blackmann-Harris 3-term/4-term
+         6/7/8: Norton-Beer weak/medium/strong)
+
+Choose stepwidth for ILS grid as fraction of 1/2opdmax
+Choose number of ILS gridpoints -n....+n on above specified grid
+
+$
+1
+0.25d0
+600
+
+
+Seventh input block
+Perform an estimation of TP-constraints for LINEFIT T/F
+
+estimated margin of FOV offset [rad]
+estimated margin of constant shear [cm]
+estimated margin of linear shear [cm / cm]
+For each periodic shear contribution:
+estimated variabilities for each periodic share component:
+Specify margin of bending amplitudes, cosine and sine [cm]
+
+$
+.false.
+1.0e-4
+0.005
+1.0e-5
+(0.002,0.002)
